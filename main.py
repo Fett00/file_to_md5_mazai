@@ -5,7 +5,7 @@ floder_to_save = "~/Desctop" #Папка для сохранения по умо
 pic_size = (16,16) # Размер картинки по умолчанию(!не рекомендуется менять!(наверное))
 
 
-def toBin(str_heh):
+def toBin(str_heh): # делает превращает в бинарник и не только
     bin_mas = ('0000','0001','0010','0011','0100',
                 '0101','0110','0111','1000','1001',
                 '1010','1011','1100','1101','1110','1111')
@@ -32,29 +32,34 @@ def toBin(str_heh):
 
 
 
-
-#fname = input(r"Введите абсолютный путь до файла: ")
-fname = "text.txt" #Разобраться с путем
-file = open(fname)
-file_data = file.read()
-file_md5 = hashlib.md5(file_data.encode('utf-8')).hexdigest()
-file.close()
-
-binar, s_c = toBin(file_md5)
-
+def file_to_md5(): # забирает файл и превращает его в md5
+    #fname = input(r"Введите абсолютный путь до файла: ")
+    fname = "text.txt" #Разобраться с путем
+    file = open(fname)
+    file_data = file.read()
+    file_md5 = hashlib.md5(file_data.encode('utf-8')).hexdigest()
+    file.close()
+    return file_md5
 
 
-image = Image.new('RGB',pic_size,s_c)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+def create_image(binr,color): # создает рисунок
+    image = Image.new('RGB',pic_size,color)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
 
-drw = ImageDraw.Draw(image)
+    drw = ImageDraw.Draw(image)
 
-for x in range(int(pic_size[0] / 2)): #1d6f -> 
-    for y in range(int(pic_size[1])):
-        if binar[x+y] == '1':
-            drw.point([x,y])
-            drw.point([pic_size[0] - x - 1,y])
+    for x in range(int(pic_size[0] / 2)): #1d6f -> 
+        for y in range(int(pic_size[1])):
+            if binr[x+y] == '1':
+                drw.point([x,y])
+                drw.point([pic_size[0] - x - 1,y])
 
-image.save('image.jpeg')
+    image.save('image.jpeg')
+
+
+if __name__ == "__main__":
+    binar, s_c = toBin(file_to_md5())
+    create_image(binar,s_c)
+    
 
 
 
