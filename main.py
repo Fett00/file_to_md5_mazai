@@ -59,9 +59,3 @@ def create_image(binr,color): # создает рисунок
 if __name__ == "__main__":
     binar, s_c = toBin(file_to_md5())
     create_image(binar,s_c)
-    
-
-
-
-
-
