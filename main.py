@@ -2,10 +2,10 @@ import hashlib
 from PIL import Image, ImageDraw
 
 floder_to_save = "~/Desctop" #Папка для сохранения по умолчанию(mac os)
-#print(hashlib.md5("a".encode('utf-8')).hexdigest())
+pic_size = (16,16) # Размер картинки по умолчанию(!не рекомендуется менять!(наверное))
 
 
-def toHex(str_heh):
+def toBin(str_heh):
     bin_mas = ('0000','0001','0010','0011','0100',
                 '0101','0110','0111','1000','1001',
                 '1010','1011','1100','1101','1110','1111')
@@ -14,10 +14,9 @@ def toHex(str_heh):
             '8','9','a','b',
             'c','d','e','f')
     ret_bin = ''
-    for i in range(len(str_heh)):  # '1d4a' -> '0001 1101 0100 1000'   
-        temp_ret_bin = bin_mas[hex_mas.index(str_heh[i])]# компорация 1 и 2 массива со сложением рез.
+    for i in range(len(str_heh)): 
+        temp_ret_bin = bin_mas[hex_mas.index(str_heh[i])]
         ret_bin += temp_ret_bin  
-    
     return ret_bin
 
 
@@ -30,21 +29,21 @@ file_data = file.read()
 file_md5 = hashlib.md5(file_data.encode('utf-8')).hexdigest()
 file.close()
 
-image = Image.new('1',[16,16])#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+binar = toBin(file_md5)
 
-toHex(file_md5)
+image = Image.new('1',pic_size)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+
+drw = ImageDraw.Draw(image)
+
+for x in range(int(pic_size[0] / 2)):
+    for y in range(int(pic_size[1])):
+        if binar[x+y] == '1':
+            drw.point([x,y])
+            drw.point([pic_size[0] - x,y])
+
+image.save('image.jpeg')
 
 
-"""
-def toHex(s):
-    lst = []
-    for ch in s:
-        hv = hex(ord(ch)).replace('0x', '')
-        if len(hv) == 1:
-            hv = '0'+hv
-        lst.append(hv)
-    
-    return reduce(lambda x,y:x+y, lst)
-"""
+
 
 
