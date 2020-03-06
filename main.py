@@ -14,10 +14,21 @@ def toBin(str_heh):
             '8','9','a','b',
             'c','d','e','f')
     ret_bin = ''
+    set_color = []
     for i in range(len(str_heh)): 
         temp_ret_bin = bin_mas[hex_mas.index(str_heh[i])]
-        ret_bin += temp_ret_bin  
-    return ret_bin
+        if i < 3:
+            set_color.append(int(hex_mas.index(str_heh[i])))
+        ret_bin += temp_ret_bin 
+    for i in range(len(set_color)):
+        if set_color[i]*8 < 256:
+            set_color[i] *= 8
+        elif set_color[i]*4 < 256:
+            set_color[i] *= 4
+        elif set_color[i]*2 < 256:
+            set_color[i] *= 2
+    set_color = tuple(set_color) 
+    return ret_bin,set_color
 
 
 
@@ -29,14 +40,15 @@ file_data = file.read()
 file_md5 = hashlib.md5(file_data.encode('utf-8')).hexdigest()
 file.close()
 
-binar = toBin(file_md5)
+binar, s_c = toBin(file_md5)
 
 
-image = Image.new('RGB',pic_size)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+
+image = Image.new('RGB',pic_size,s_c)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
 
 drw = ImageDraw.Draw(image)
 
-for x in range(int(pic_size[0] / 2)):
+for x in range(int(pic_size[0] / 2)): #1d6f -> 
     for y in range(int(pic_size[1])):
         if binar[x+y] == '1':
             drw.point([x,y])
