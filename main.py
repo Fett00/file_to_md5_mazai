@@ -5,7 +5,7 @@ floder_to_save = "~/Desctop" #Папка для сохранения по умо
 pic_size = (16,16) # Размер картинки по умолчанию(!не рекомендуется менять!(наверное))
 
 
-def toBin(str_heh): # делает превращает в бинарник и не только
+def toBin(str_heh): # превращает в бинарник и не только
     bin_mas = ('0000','0001','0010','0011','0100',
                 '0101','0110','0111','1000','1001',
                 '1010','1011','1100','1101','1110','1111')
@@ -43,11 +43,11 @@ def file_to_md5(): # забирает файл и превращает его в
 
 
 def create_image(binr,color): # создает рисунок
-    image = Image.new('RGB',pic_size,color)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+    image = Image.new('RGB',pic_size,color)
 
     drw = ImageDraw.Draw(image)
 
-    for x in range(int(pic_size[0] / 2)): #1d6f -> 
+    for x in range(int(pic_size[0] / 2)): 
         for y in range(int(pic_size[1])):
             if binr[x+y] == '1':
                 drw.point([x,y])
