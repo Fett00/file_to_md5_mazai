@@ -31,7 +31,8 @@ file.close()
 
 binar = toBin(file_md5)
 
-image = Image.new('1',pic_size)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
+
+image = Image.new('RGB',pic_size)#Куб 16х16, где есть 2 одинаковых прямоугольника 8х16 
 
 drw = ImageDraw.Draw(image)
 
@@ -39,7 +40,7 @@ for x in range(int(pic_size[0] / 2)):
     for y in range(int(pic_size[1])):
         if binar[x+y] == '1':
             drw.point([x,y])
-            drw.point([pic_size[0] - x,y])
+            drw.point([pic_size[0] - x - 1,y])
 
 image.save('image.jpeg')
 
